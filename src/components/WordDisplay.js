@@ -1,4 +1,5 @@
 import React from 'react';
+import './WordDisplay.css';
 
 const WordDisplay = ({ word = '', guessedLetters = [] }) => {
   // Ensure word is a string

@@ -3,6 +3,7 @@ import axios from 'axios';
 import WordDisplay from './components/WordDisplay.js';
 import Keyboard from './components/Keyboard.js';
 import Hangman from './components/Hangman.js';
+import './App.css';
 
 const words = ['react', 'javascript', 'hangman', 'coding']; // List of possible words
 
@@ -54,9 +55,8 @@ const App = () => {
       <Hangman wrongGuesses={wrongGuesses} />
       <WordDisplay word={word} guessedLetters={guessedLetters} />
       <Keyboard onGuess={handleGuess} guessedLetters={guessedLetters} />
-
       {isWinner && <p className="congrats-message">🎉 Congrats! You guessed the word! 🎉</p>}
-      {isLoser && <p>You lost! The word was {word}</p>}
+      {isLoser && <p className="lose-message">You lost! The word was {word}</p>}
 
       <div>
         <button onClick={clearGame}>Clear Game</button>

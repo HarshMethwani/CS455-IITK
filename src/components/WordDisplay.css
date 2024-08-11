@@ -1,0 +1,21 @@
+.word{
+    font-size: 32px;
+    letter-spacing: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    }
+  
+  .word span{
+    border-bottom: 2px solid #333;
+    padding: 0 5px;
+    }
+  
+  .word span.hidden{
+    color: #fff;
+}
+  

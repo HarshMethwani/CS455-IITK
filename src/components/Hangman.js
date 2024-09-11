@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './Hangman.css';
 
 const Hangman = ({ wrongGuesses }) => {
@@ -29,6 +30,10 @@ const Hangman = ({ wrongGuesses }) => {
       </svg>
     </div>
   );
+};
+
+Hangman.propTypes = {
+  wrongGuesses: PropTypes.number.isRequired,
 };
 
 export default Hangman;

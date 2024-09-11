@@ -4,12 +4,12 @@ import './Hangman.css';
 
 const Hangman = ({ wrongGuesses }) => {
   const bodyParts = [
-    { type: 'circle', cx: 150, cy: 70, r: 20 }, // Head
-    { type: 'line', x1: 150, y1: 90, x2: 150, y2: 140 }, // Body
-    { type: 'line', x1: 150, y1: 110, x2: 120, y2: 100 }, // Left arm
-    { type: 'line', x1: 150, y1: 110, x2: 180, y2: 100 }, // Right arm
-    { type: 'line', x1: 150, y1: 140, x2: 130, y2: 170 }, // Left leg
-    { type: 'line', x1: 150, y1: 140, x2: 170, y2: 170 }, // Right leg
+    { type: 'circle', cx: 150, cy: 70, r: 20, testId: 'body-part-0' }, // Head
+    { type: 'line', x1: 150, y1: 90, x2: 150, y2: 140, testId: 'body-part-1' }, // Body
+    { type: 'line', x1: 150, y1: 110, x2: 120, y2: 100, testId: 'body-part-2' }, // Left arm
+    { type: 'line', x1: 150, y1: 110, x2: 180, y2: 100, testId: 'body-part-3' }, // Right arm
+    { type: 'line', x1: 150, y1: 140, x2: 130, y2: 170, testId: 'body-part-4' }, // Left leg
+    { type: 'line', x1: 150, y1: 140, x2: 170, y2: 170, testId: 'body-part-5' }, // Right leg
   ];
 
   return (
@@ -24,8 +24,8 @@ const Hangman = ({ wrongGuesses }) => {
         {/* Body Parts */}
         {bodyParts.map((part, index) => (
           part.type === 'circle' ? 
-          <circle key={index} cx={part.cx} cy={part.cy} r={part.r} className={wrongGuesses > index ? 'visible' : 'hidden'} /> : 
-          <line key={index} x1={part.x1} y1={part.y1} x2={part.x2} y2={part.y2} className={wrongGuesses > index ? 'visible' : 'hidden'} />
+          <circle key={index} cx={part.cx} cy={part.cy} r={part.r} className={wrongGuesses > index ? 'visible' : 'hidden'} data-testid={part.testId} /> : 
+          <line key={index} x1={part.x1} y1={part.y1} x2={part.x2} y2={part.y2} className={wrongGuesses > index ? 'visible' : 'hidden'} data-testid={part.testId} />
         ))}
       </svg>
     </div>

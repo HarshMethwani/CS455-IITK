@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import WordDisplay from './components/WordDisplay.js';
 import Keyboard from './components/Keyboard.js';
@@ -8,7 +8,7 @@ import './App.css';
 const words = ['react', 'javascript', 'hangman', 'coding']; // List of possible words
 
 const App = () => {
-  const [word, setWord] = useState(words[Math.floor(Math.random() * words.length)]); // Randomly select a word
+  const [word, setWord] = useState(words[Math.floor(Math.random() * words.length)]);
   const [guessedLetters, setGuessedLetters] = useState([]);
   const [wrongGuesses, setWrongGuesses] = useState(0);
   const [hint, setHint] = useState('');
@@ -16,35 +16,31 @@ const App = () => {
   const maxWrongGuesses = 6;
 
   const handleGuess = (letter) => {
-    if (!guessedLetters.includes(letter) && !word.includes(letter)) {
-      setWrongGuesses(wrongGuesses + 1);
+    if(isWinner || isLoser) return;
+    if (!guessedLetters.includes(letter)) {
+      setWrongGuesses(prev => word.includes(letter) ? prev : prev + 1);
+      setGuessedLetters(prev => [...prev, letter]);
     }
-    setGuessedLetters([...guessedLetters, letter]);
   };
 
-  // Fetch a hint using the WordsAPI when the "Show Hint" button is clicked
   const fetchHint = async () => {
     try {
-      const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`, {
-      });
-      console.log(response.data[0].meanings[1].definitions[0].definition)
-      setHint(response.data[0].meanings[0].definitions[0].definition); // or use synonyms, examples, etc.
-
-    } catch (error) {
-      console.error("Error fetching hint:", error);
+      const { data } = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+      setHint(data[0]?.meanings[0]?.definitions[0]?.definition || 'No hint available');
+    } catch {
       setHint('No hint available');
     }
   };
 
-  const clearGame = () => {
+  const resetGame = () => {
     setGuessedLetters([]);
     setWrongGuesses(0);
-    setHint(''); // Clear the hint when starting a new game
+    setHint('');
   };
 
-  const newGame = () => {
+  const startNewGame = () => {
     setWord(words[Math.floor(Math.random() * words.length)]);
-    clearGame();
+    resetGame();
   };
 
   const isWinner = word.split('').every((letter) => guessedLetters.includes(letter));
@@ -55,16 +51,16 @@ const App = () => {
       <Hangman wrongGuesses={wrongGuesses} />
       <WordDisplay word={word} guessedLetters={guessedLetters} />
       <Keyboard onGuess={handleGuess} guessedLetters={guessedLetters} />
+      
       {isWinner && <p className="congrats-message">🎉 Congrats! You guessed the word! 🎉</p>}
       {isLoser && <p className="lose-message">You lost! The word was {word}</p>}
 
       <div>
-        <button onClick={clearGame}>Clear Game</button>
-        <button onClick={newGame}>New Game</button>
-        <button onClick={fetchHint}>Show Hint</button> {/* Show Hint Button */}
+        <button onClick={resetGame}>Clear Game</button>
+        <button onClick={startNewGame}>New Game</button>
+        <button onClick={fetchHint}>Show Hint</button>
       </div>
 
-      {/* Display the hint if available */}
       {hint && <p className="hint">Hint: {hint}</p>}
     </div>
   );

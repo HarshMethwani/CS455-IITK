@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react'
 import WordDisplay from './components/WordDisplay';
 import Keyboard from './components/Keyboard';
 import Hangman from './components/Hangman';

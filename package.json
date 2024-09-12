@@ -13,7 +13,7 @@
   "scripts": {
     "start": "npm run lint && npm run test && react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "jest --verbose",
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint --fix . "

@@ -42,6 +42,11 @@ To run tests and generate a coverage report, use the following command:
 ```sh
 npm run test 
 ```
+### Checking Code Duplication
+To check for code duplication, use the following command:
+```sh
+npx jscpd --min-lines 10 --threshold 5 src/
+```
 ### Summary of Refactoring and Testing Changes
 
 ## Refactoring

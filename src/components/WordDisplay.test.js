@@ -1,42 +1,45 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import WordDisplay from './WordDisplay';
 
 describe('WordDisplay Component', () => {
-  test('renders the word with guessed letters visible', () => {
+  test('renders correctly with guessed letters', () => {
     const word = 'react';
     const guessedLetters = ['r', 'e', 'a'];
-
-    render(<WordDisplay word={word} guessedLetters={guessedLetters} />);
-
-    expect(screen.getByText('r')).toBeInTheDocument();
-    expect(screen.getByText('e')).toBeInTheDocument();
-    expect(screen.getByText('a')).toBeInTheDocument();
-    expect(screen.getAllByText('_').length).toBe(2);
+    const { container } = render(<WordDisplay word={word} guessedLetters={guessedLetters} />);
+    expect(container.textContent).toBe('rea__');
   });
 
-  test('renders underscores for non-guessed letters', () => {
-    const word = 'javascript';
-    const guessedLetters = ['a', 't'];
-
-    render(<WordDisplay word={word} guessedLetters={guessedLetters} />);
-
-    expect(screen.getAllByText('_').length).toBe(7);
-    expect(screen.getAllByText('a').length).toBe(2);
-    expect(screen.getByText('t')).toBeInTheDocument();
+  test('renders correctly with no guessed letters', () => {
+    const word = 'react';
+    const guessedLetters = [];
+    const { container } = render(<WordDisplay word={word} guessedLetters={guessedLetters} />);
+    expect(container.textContent).toBe('_____');
   });
 
-  test('renders empty string when no word is provided', () => {
-    render(<WordDisplay word="" guessedLetters={['a']} />);
-
-    expect(screen.queryByText('_')).not.toBeInTheDocument();
+  test('renders correctly with all guessed letters', () => {
+    const word = 'react';
+    const guessedLetters = ['r', 'e', 'a', 'c', 't'];
+    const { container } = render(<WordDisplay word={word} guessedLetters={guessedLetters} />);
+    expect(container.textContent).toBe('react');
   });
 
-  test('renders underscores for all letters if no guessed letters are provided', () => {
-    const word = 'hello';
+  test('renders correctly with guessed letters not in the word', () => {
+    const word = 'react';
+    const guessedLetters = ['x', 'y', 'z'];
+    const { container } = render(<WordDisplay word={word} guessedLetters={guessedLetters} />);
+    expect(container.textContent).toBe('_____');
+  });
 
-    render(<WordDisplay word={word} guessedLetters={[]} />);
+  test('renders correctly with an empty word', () => {
+    const word = '';
+    const guessedLetters = ['r', 'e', 'a', 'c', 't'];
+    const { container } = render(<WordDisplay word={word} guessedLetters={guessedLetters} />);
+    expect(container.textContent).toBe('');
+  });
 
-    expect(screen.getAllByText('_').length).toBe(5);
+  test('renders correctly with default props', () => {
+    const { container } = render(<WordDisplay />);
+    expect(container.textContent).toBe('');
   });
 });

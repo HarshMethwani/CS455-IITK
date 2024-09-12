@@ -26,7 +26,7 @@ jobs:
         run: npm install
 
       - name: Run ESLint
-        run: npx eslint src/ --format stylish > reports/code-quality-report.txt
+        run: npx eslint src/ --format stylish > code-quality-report.txt
 
       - name: Run tests with coverage
         run: npm run test -- --coverage

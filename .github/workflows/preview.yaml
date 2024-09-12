@@ -1,4 +1,4 @@
-name: Vercel Production Deployment
+name: CI Pipeline
 
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -31,6 +31,18 @@ jobs:
       - name: Run tests with coverage
         run: npm run test -- --coverage
 
+      - name: Check test coverage
+        run: |
+          COVERAGE_THRESHOLD=80
+          COVERAGE=$(npx jest --coverage --coverageReporters=text-summary | grep 'All files' | awk '{print $4}' | sed 's/%//')
+          if [ "$COVERAGE" -lt "$COVERAGE_THRESHOLD" ]; then
+            echo "Test coverage ($COVERAGE%) is below the threshold ($COVERAGE_THRESHOLD%)"
+            exit 1
+          fi
+
+      - name: Check code duplication
+        run: npx jscpd --min-lines 10 --threshold 5 src/
+
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
         with:
@@ -41,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: code-quality-report
-          path: reports/code-quality-report.txt
+          path: code-quality-report.txt
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
@@ -51,6 +63,12 @@ jobs:
 
       - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Copy reports to public directory
+        run: |
+          mkdir -p public/reports
+          cp -r coverage public/reports/
+          cp code-quality-report.txt public/reports/
 
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

@@ -92,3 +92,42 @@ button + button{
   border-color: #adb5bd;
   color: #fff;
 }
+
+.App {
+  text-align: center;
+}
+
+.congrats-message, .lose-message {
+  font-size: 1.5em;
+  margin: 20px 0;
+}
+
+.hint {
+  font-size: 1.2em;
+  margin: 20px 0;
+}
+
+.leaderboard-container {
+  max-height: 200px; /* Adjust the height as needed */
+  overflow-y: auto;
+  margin: 20px auto;
+  width: 80%; /* Adjust the width as needed */
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.leaderboard-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.leaderboard-container li {
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.leaderboard-container li:last-child {
+  border-bottom: none;
+}

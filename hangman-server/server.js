@@ -1,7 +1,6 @@
-import express from 'express';
-import cors from 'cors';
-import { Player, sequelize } from './models'; // Ensure this path is correct
-
+const express = require('express');
+const cors = require('cors');
+const { Player, sequelize } = require('./models');
 const app = express();
 const port = 3001;
 
@@ -71,11 +70,6 @@ app.get('/leaderboard', async (req, res) => {
     limit: 10,
   });
   res.json(leaderboard);
-});
-
-app.delete('/leaderboard', async (req, res) => {
-  await Player.destroy({ where: {}, truncate: true });
-  res.sendStatus(204);
 });
 
 app.listen(port, () => {

@@ -17,21 +17,22 @@ const App = () => {
   const [playerName, setPlayerName] = useState('');
   const [hint, setHint] = useState('');
   const [leaderboard, setLeaderboard] = useState([]);
-  // eslint-disable-next-line no-unused-vars
   const [nameEntered, setNameEntered] = useState(false);
   const [canPlay, setCanPlay] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(true); 
   const [showLeaderboard, setShowLeaderboard] = useState(false); 
 
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+
   useEffect(() => {
-    axios.get('http://localhost:3001/leaderboard')
+    axios.get(`${backendUrl}/leaderboard`)
       .then(response => setLeaderboard(response.data))
       .catch(error => console.error('Error fetching leaderboard:', error));
-  }, []);
+  }, [backendUrl]);
 
   const handleGuess = (letter) => {
     if (gameState.isWinner || gameState.isLoser || !canPlay) return;
-    axios.post('http://localhost:3001/game/guess', { letter })
+    axios.post(`${backendUrl}/game/guess`, { letter })
       .then(response => setGameState(response.data))
       .catch(error => console.error('Error making guess:', error));
   };
@@ -41,7 +42,7 @@ const App = () => {
     setNameEntered(true);
     setCanPlay(true);
     setModalIsOpen(false); 
-    axios.post('http://localhost:3001/game/new')
+    axios.post(`${backendUrl}/game/new`)
       .then(response => setGameState(response.data))
       .catch(error => console.error('Error starting new game:', error));
   };
@@ -58,9 +59,9 @@ const App = () => {
 
   const saveScore = () => {
     const score = gameState.isWinner ? 100 - gameState.wrongGuesses * 10 : 0;
-    axios.post('http://localhost:3001/leaderboard/score', { name: playerName, score })
+    axios.post(`${backendUrl}/leaderboard/score`, { name: playerName, score })
       .then(() => {
-        axios.get('http://localhost:3001/leaderboard')
+        axios.get(`${backendUrl}/leaderboard`)
           .then(response => setLeaderboard(response.data))
           .catch(error => console.error('Error fetching leaderboard:', error));
       })

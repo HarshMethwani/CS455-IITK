@@ -61,7 +61,7 @@ const App = () => {
 
   const saveScore = () => {
     const score = gameState.isWinner ? 100 - gameState.wrongGuesses * 10 : 0;
-    axios.post('http://localhost:3001/game/score', { name: playerName, score })
+    axios.post('http://localhost:3001/leaderboard/score', { name: playerName, score })
       .then(() => {
         axios.get('http://localhost:3001/leaderboard')
           .then(response => setLeaderboard(response.data))

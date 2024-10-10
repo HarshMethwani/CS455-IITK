@@ -1,18 +1,19 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+/hangman-client/node_modules
 /.pnp
 .pnp.js
 
 # testing
-/coverage
-
+/hangman-client/coverage
+/hangman-server/coverage
 #ESlint chache
 .eslintcache
 
 # production
-/build
+/hangman-client/build
+/hangman-server/build
 
 # misc
 .DS_Store

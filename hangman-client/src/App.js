@@ -42,11 +42,23 @@ const App = () => {
     setPlayerName(name);
     setNameEntered(true);
     setCanPlay(true);
-    setModalIsOpen(false); 
+    setModalIsOpen(false);
+  
+    // Reset the game state before starting a new game
+    setGameState({
+      word: '',
+      guessedLetters: [],
+      wrongGuesses: 0,
+      isWinner: false,
+      isLoser: false,
+    });
+  
+    // Now start a new game by calling the backend
     axios.post(`${backendUrl}/game/new`)
       .then(response => setGameState(response.data))
       .catch(error => console.error('Error starting new game:', error));
   };
+  
 
   const fetchHint = async () => {
     if (!canPlay) return;

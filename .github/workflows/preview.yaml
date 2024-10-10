@@ -42,8 +42,6 @@ jobs:
       - name: Build Project Artifacts for Client
         run: |
           cd hangman-client
-          # Replace <BACKEND_URL> with the actual URL of your backend service.
-          echo "REACT_APP_BACKEND_URL=${{ secrets.BACKEND_URL }}" >> .env
           npm run build
 
       - name: Deploy Client to Vercel

@@ -128,7 +128,6 @@ In short, the React app is the user interface that talks to the Node.js backend 
 
 # Testing Pyramid
 
-## Unit Tests
   - The unit tests for services used are written in folder `hangman-server/tests`
   - The Component tests for each react components is mentioned in `hangman-client/src/compoments/.test.js`
   - The server-database integration test is also written in folder `hangman-server/tests`

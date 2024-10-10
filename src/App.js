@@ -3,6 +3,7 @@ import axios from 'axios';
 import WordDisplay from './components/WordDisplay.js';
 import Keyboard from './components/Keyboard.js';
 import Hangman from './components/Hangman.js';
+import NameModal from './components/NameModal.js'; 
 import './App.css';
 
 const App = () => {
@@ -17,15 +18,8 @@ const App = () => {
   const [hint, setHint] = useState('');
   const [leaderboard, setLeaderboard] = useState([]);
   const [nameEntered, setNameEntered] = useState(false);
-  const [canPlay, setCanPlay] = useState(false); // New state variable to control game actions
-
-  useEffect(() => {
-    if (nameEntered) {
-      axios.get('http://localhost:3001/game')
-        .then(response => setGameState(response.data))
-        .catch(error => console.error('Error fetching game state:', error));
-    }
-  }, [nameEntered]);
+  const [canPlay, setCanPlay] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(true); 
 
   useEffect(() => {
     axios.get('http://localhost:3001/leaderboard')
@@ -34,26 +28,24 @@ const App = () => {
   }, []);
 
   const handleGuess = (letter) => {
-    if (gameState.isWinner || gameState.isLoser || !canPlay) return; // Prevent guessing if cannot play
+    if (gameState.isWinner || gameState.isLoser || !canPlay) return;
     axios.post('http://localhost:3001/game/guess', { letter })
       .then(response => setGameState(response.data))
       .catch(error => console.error('Error making guess:', error));
   };
 
-  const startNewGame = () => {
-    const name = prompt('Enter your name to start the game');
-    if (name) {
-      setPlayerName(name);
-      setNameEntered(true);
-      setCanPlay(true); // Allow playing after starting a new game
-      axios.post('http://localhost:3001/game/new')
-        .then(response => setGameState(response.data))
-        .catch(error => console.error('Error starting new game:', error));
-    }
+  const startNewGame = (name) => {
+    setPlayerName(name);
+    setNameEntered(true);
+    setCanPlay(true);
+    setModalIsOpen(false); 
+    axios.post('http://localhost:3001/game/new')
+      .then(response => setGameState(response.data))
+      .catch(error => console.error('Error starting new game:', error));
   };
 
   const fetchHint = async () => {
-    if (!canPlay) return; // Prevent hint fetching if cannot play
+    if (!canPlay) return;
     try {
       const { data } = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${gameState.word}`);
       setHint(data[0]?.meanings[0]?.definitions[0]?.definition || 'No hint available');
@@ -78,7 +70,7 @@ const App = () => {
       saveScore();
       setTimeout(() => {
         alert(`Game Over! Your score is ${gameState.isWinner ? 100 - gameState.wrongGuesses * 10 : 0}`);
-        setCanPlay(false); // Reset play permission after the game ends
+        setCanPlay(false);
       }, 100);
     }
   }, [gameState.isWinner, gameState.isLoser]);
@@ -91,15 +83,15 @@ const App = () => {
 
   return (
     <div className="App">
-      <Hangman wrongGuesses={gameState.wrongGuesses} onNewGame={startNewGame} />
+      <Hangman wrongGuesses={gameState.wrongGuesses} />
       <WordDisplay word={gameState.word} guessedLetters={gameState.guessedLetters} />
-      <Keyboard onGuess={handleGuess} guessedLetters={gameState.guessedLetters} disabled={!canPlay} /> {/* Disable keyboard if cannot play */}
+      <Keyboard onGuess={handleGuess} guessedLetters={gameState.guessedLetters} disabled={!canPlay} />
 
       {gameState.isWinner && <p className="congrats-message">🎉 Congrats! You guessed the word! 🎉</p>}
       {gameState.isLoser && <p className="lose-message">You lost! The word was {gameState.word}</p>}
 
       <div>
-        <button onClick={startNewGame}>New Game</button>
+        <button onClick={() => setModalIsOpen(true)}>New Game</button>
         <button onClick={fetchHint}>Show Hint</button>
         <button onClick={clearLeaderboard}>Clear Leaderboard</button>
       </div>
@@ -114,6 +106,11 @@ const App = () => {
           ))}
         </ul>
       </div>
+      <NameModal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        onSubmit={startNewGame}
+      />
     </div>
   );
 };

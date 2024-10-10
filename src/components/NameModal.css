@@ -1,0 +1,35 @@
+/* src/components/NameModal.css */
+.modal {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  .overlay {
+    background: rgba(0, 0, 0, 0.75);
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    padding: 10px;
+    margin-right: 10px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #218838;
+  }
+  

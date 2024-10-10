@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# Hangman Game
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple yet fun Hangman game built with React. The game allows players to guess a hidden word by selecting letters, with a limited number of incorrect guesses allowed before losing.
 
-## Available Scripts
+## Demo
+You can view the game live here: [Live Demo](https://hangman-nine-fawn.vercel.app/)
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+* Interactive UI after every stage
+* Get the hints for the word you're trying to guess
+* Options to clear game and restart it
+* Mobile-friendly and responsive design
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Screenshots
+![image](https://github.com/user-attachments/assets/24b1eec9-4812-4448-b97c-fd0508634e1c)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies Used
 
-### `npm test`
+* React
+* ESLint
+* Jest
+* Vercel
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Code Quality Tools
 
-### `npm run build`
+### ESLint
+ESLint is used to ensure code quality and consistency. It helps in identifying and fixing problems in your JavaScript code.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Jest
+Jest is used for running tests and generating coverage reports. It ensures that the code is well-tested and reliable.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## How to Run Code Quality Tools
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Running ESLint
+To run ESLint and check for code quality issues, use the following command:
+```sh
+npx eslint src/
+```
+### Running Tests with Coverage
+To run tests and generate a coverage report, use the following command:
+```sh
+npm run test 
+```
+### Checking Code Duplication
+To check for code duplication, use the following command:
+```sh
+npx jscpd --min-lines 10 --threshold 5 src/
+```
+### Summary of Refactoring and Testing Changes
 
-### `npm run eject`
+## Refactoring
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* Improved code readability and maintainability by adhering to ESLint rules.
+* Reduced code complexity by refactoring complex functions and components.
+* Removed duplicate code to ensure a DRY codebase.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Testing
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+* Added comprehensive unit tests to cover all components and functions.*
+* Achieved high test coverage to ensure code reliability.
+* Integrated test coverage checks into the CI pipeline to maintain code quality.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Continuous Integration
 
-## Learn More
+The project uses GitHub Actions for continuous integration. The CI pipeline includes the following steps:
+* Running ESLint to check for code quality issues.
+* Running tests with Jest to ensure code reliability.
+* Checking code duplication with jscpd.
+* Deploying the project to Vercel if all checks pass.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

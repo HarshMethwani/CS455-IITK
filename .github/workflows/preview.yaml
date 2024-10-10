@@ -31,7 +31,7 @@ jobs:
 
       - name: Check client test coverage
         run: |
-          cd src
+          cd hangman-client
           COVERAGE_THRESHOLD=75
           COVERAGE=$(npx jest --coverage --coverageReporters=text-summary | grep 'All files' | awk '{print $4}' | sed 's/%//')
           if [ "$COVERAGE" -lt "$COVERAGE_THRESHOLD" ]; then
@@ -41,10 +41,10 @@ jobs:
 
       - name: Build Project Artifacts for Client
         run: |
-          cd src
+          cd hangman-client
           # Replace <BACKEND_URL> with the actual URL of your backend service.
           echo "REACT_APP_BACKEND_URL=${{ secrets.BACKEND_URL }}" >> .env
           npm run build
 
       - name: Deploy Client to Vercel
-        run: cd src && vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: cd hangman-client && vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}

@@ -17,6 +17,7 @@ const App = () => {
   const [playerName, setPlayerName] = useState('');
   const [hint, setHint] = useState('');
   const [leaderboard, setLeaderboard] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [nameEntered, setNameEntered] = useState(false);
   const [canPlay, setCanPlay] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(true); 

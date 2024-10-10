@@ -20,6 +20,7 @@ const App = () => {
   const [nameEntered, setNameEntered] = useState(false);
   const [canPlay, setCanPlay] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(true); 
+  const [showLeaderboard, setShowLeaderboard] = useState(false); 
 
   useEffect(() => {
     axios.get('http://localhost:3001/leaderboard')
@@ -75,10 +76,8 @@ const App = () => {
     }
   }, [gameState.isWinner, gameState.isLoser]);
 
-  const clearLeaderboard = () => {
-    axios.delete('http://localhost:3001/leaderboard')
-      .then(() => setLeaderboard([]))
-      .catch(error => console.error('Error clearing leaderboard:', error));
+  const toggleLeaderboard = () => {
+    setShowLeaderboard(!showLeaderboard); 
   };
 
   return (
@@ -93,19 +92,26 @@ const App = () => {
       <div>
         <button onClick={() => setModalIsOpen(true)}>New Game</button>
         <button onClick={fetchHint}>Show Hint</button>
-        <button onClick={clearLeaderboard}>Clear Leaderboard</button>
+        <button onClick={toggleLeaderboard}>
+          {showLeaderboard ? 'Hide Leaderboard' : 'Show Leaderboard'}
+        </button>
       </div>
 
       {hint && <p className="hint">Hint: {hint}</p>}
 
-      <h2>Leaderboard</h2>
-      <div className="leaderboard-container">
-        <ul>
-          {leaderboard.map((player, index) => (
-            <li key={index}>{player.name}: {player.score}</li>
-          ))}
-        </ul>
-      </div>
+      {showLeaderboard && ( 
+        <div>
+          <h2>Leaderboard</h2>
+          <div className="leaderboard-container">
+            <ul>
+              {leaderboard.map((player, index) => (
+                <li key={index}>{player.name}: {player.score}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+
       <NameModal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}

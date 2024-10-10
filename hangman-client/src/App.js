@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import WordDisplay from './components/WordDisplay.js';
 import Keyboard from './components/Keyboard.js';
@@ -23,7 +23,7 @@ const App = () => {
   const [modalIsOpen, setModalIsOpen] = useState(true); 
   const [showLeaderboard, setShowLeaderboard] = useState(false); 
 
-  const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+  const backendUrl ='https://hangman-server-1u6k.onrender.com';
 
   useEffect(() => {
     axios.get(`${backendUrl}/leaderboard`)
@@ -58,7 +58,7 @@ const App = () => {
     }
   };
 
-  const saveScore = () => {
+  const saveScore = useCallback(() => {
     const score = gameState.isWinner ? 100 - gameState.wrongGuesses * 10 : 0;
     axios.post(`${backendUrl}/leaderboard/score`, { name: playerName, score })
       .then(() => {
@@ -67,7 +67,7 @@ const App = () => {
           .catch(error => console.error('Error fetching leaderboard:', error));
       })
       .catch(error => console.error('Error saving score:', error));
-  };
+  }, [gameState.isWinner, gameState.wrongGuesses, playerName]);
 
   useEffect(() => {
     if (gameState.isWinner || gameState.isLoser) {
@@ -77,7 +77,7 @@ const App = () => {
         setCanPlay(false);
       }, 100);
     }
-  }, [gameState.isWinner, gameState.isLoser]);
+  }, [gameState.isWinner, gameState.isLoser, saveScore]);
 
   const toggleLeaderboard = () => {
     setShowLeaderboard(!showLeaderboard); 

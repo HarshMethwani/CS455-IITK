@@ -1,6 +1,7 @@
 // src/components/NameModal.js
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import PropTypes from 'prop-types'; // Import PropTypes
 import './NameModal.css'; 
 
 Modal.setAppElement('#root'); 
@@ -34,6 +35,13 @@ const NameModal = ({ isOpen, onRequestClose, onSubmit }) => {
       <button onClick={onRequestClose}>Cancel</button>
     </Modal>
   );
+};
+
+// Define prop types
+NameModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onRequestClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default NameModal;

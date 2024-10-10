@@ -26,3 +26,4 @@ yarn-debug.log*
 yarn-error.log*
 
 /hangman-server/database.sqlite
+/hangman-server/node_modules

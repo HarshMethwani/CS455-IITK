@@ -27,6 +27,7 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.jest,
+        ...globals.node,
       },
     },
   },

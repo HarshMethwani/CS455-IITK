@@ -23,7 +23,7 @@ const App = () => {
   const [modalIsOpen, setModalIsOpen] = useState(true); 
   const [showLeaderboard, setShowLeaderboard] = useState(false); 
 
-  const backendUrl ='https://hangman-server-1u6k.onrender.com';
+  const backendUrl =process.env.REACT_APP_BACKEND_URL ;
 
   useEffect(() => {
     axios.get(`${backendUrl}/leaderboard`)

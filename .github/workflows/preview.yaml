@@ -1,21 +1,84 @@
-name: Vercel Production Deployment
+name: CI Pipeline
+
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
 on:
   push:
     branches:
       - dev
+
 jobs:
-  Deploy-Production:
+  Deploy-Server:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install Vercel CLI
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install server dependencies
+        run: cd hangman-server && npm install
+
+      - name: Run ESLint for server
+        run: cd hangman-server && npx eslint . --format stylish > code-quality-report-server.txt
+
+      - name: Run server tests with coverage
+        run: cd hangman-server && npm run test -- --coverage
+
+      - name: Check server test coverage
+        run: |
+          cd hangman-server
+          COVERAGE_THRESHOLD=75
+          COVERAGE=$(npx jest --coverage --coverageReporters=text-summary | grep 'All files' | awk '{print $4}' | sed 's/%//')
+          if [ "$COVERAGE" -lt "$COVERAGE_THRESHOLD" ]; then
+            echo "Test coverage ($COVERAGE%) is below the threshold ($COVERAGE_THRESHOLD%)"
+            exit 1
+          fi
+
+      - name: Upload server coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: server-coverage-report
+          path: hangman-server/coverage
+
+      - name: Install Vercel CLI for server
         run: npm install --global vercel@latest
-      - name: Pull Vercel Environment Information
+
+      - name: Pull Vercel Environment Information for server
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy Server to Vercel
+        run: cd hangman-server && vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+  Deploy-Client:
+    runs-on: ubuntu-latest
+    needs: Deploy-Server  # Ensure the server is deployed before the client
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js for client
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install client dependencies
+        run: cd src && npm install
+
+      - name: Run ESLint for client
+        run: cd src && npx eslint . --format stylish > code-quality-report-client.txt
+
+      - name: Build Project Artifacts for Client
+        run: |
+          cd src
+          # Replace <BACKEND_URL> with the actual URL of your backend service.
+          echo "REACT_APP_BACKEND_URL=${{ steps.deploy_server.outputs.backend_url }}" >> .env
+          npm run build
+
+      - name: Deploy Client to Vercel
+        run: cd src && vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}

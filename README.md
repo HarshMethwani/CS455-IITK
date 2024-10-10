@@ -84,7 +84,7 @@ The project uses GitHub Actions for continuous integration. The CI pipeline incl
   - The frontend communicates with the backend through HTTP requests for starting a new game, submitting guesses, and getting hints.
   - It also listens for updates from the backend about the game state and leaderboard.
 
-## 2. Backend (Node.js with Express)
+## 2. Backend (Node.js with Express) - Deployed Using Render
 - **API Endpoints**:
   - `POST /game/new`: Starts a new game and sends back the initial game state.
   - `POST /game/guess`: Takes a guessed letter and updates the game state based on that guess.

@@ -23,7 +23,7 @@ const App = () => {
   const [modalIsOpen, setModalIsOpen] = useState(true); 
   const [showLeaderboard, setShowLeaderboard] = useState(false); 
 
-  const backendUrl =process.env.REACT_APP_BACKEND_URL || 'http://13.201.115.38' ;
+  const backendUrl = 'http://13.201.115.38' ;
 
   useEffect(() => {
     axios.get(`${backendUrl}/leaderboard`)

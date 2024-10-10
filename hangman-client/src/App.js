@@ -77,8 +77,7 @@ const App = () => {
         setCanPlay(false);
       }, 100);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameState.isWinner, gameState.isLoser, saveScore]);
+  }, [gameState.isWinner, gameState.isLoser, gameState.wrongGuesses, saveScore]); 
 
   const toggleLeaderboard = () => {
     setShowLeaderboard(!showLeaderboard); 

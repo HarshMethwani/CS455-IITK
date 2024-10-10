@@ -126,5 +126,13 @@ The project uses GitHub Actions for continuous integration. The CI pipeline incl
 ## Summary
 In short, the React app is the user interface that talks to the Node.js backend via API calls. The backend processes these requests and interacts with the Sqlite database to manage game data and leaderboard info. If hints are requested, the backend can also pull data from an external dictionary API. This setup keeps everything organized and ensures smooth gameplay!
 
+# Testing Pyramid
+
+## Unit Tests
+  - The unit tests for services used are written in folder `hangman-server/tests`
+  - The Component tests for each react components is mentioned in `hangman-client/src/compoments/.test.js`
+  - The server-database integration test is also written in folder `hangman-server/tests`
+
+
 
 

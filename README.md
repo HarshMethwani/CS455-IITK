@@ -70,4 +70,61 @@ The project uses GitHub Actions for continuous integration. The CI pipeline incl
 * Deploying the project to Vercel if all checks pass.
 
 
+# Hangman Game Application Architecture
+
+## 1. Frontend (React)
+- **Components**:
+  - **App**: This is the main component where all the magic happens. It manages game state and logic.
+  - **WordDisplay**: Displays the word being guessed, showing guessed letters.
+  - **Keyboard**: The UI for players to guess letters.
+  - **Hangman**: Visual representation of the hangman game.
+  - **NameModal**: A popup for players to enter their names.
+  
+- **Interactions**:
+  - The frontend communicates with the backend through HTTP requests for starting a new game, submitting guesses, and getting hints.
+  - It also listens for updates from the backend about the game state and leaderboard.
+
+## 2. Backend (Node.js with Express)
+- **API Endpoints**:
+  - `POST /game/new`: Starts a new game and sends back the initial game state.
+  - `POST /game/guess`: Takes a guessed letter and updates the game state based on that guess.
+  - `GET /leaderboard`: Fetches the leaderboard data to show player scores.
+  - `POST /leaderboard/score`: Submits a player’s score to update the leaderboard.
+  - `GET /hints`: (Optional) Gets a hint for the current word from an external API.
+  
+- **Logic**:
+  - The backend handles game states (win/loss), tracks guessed letters, and calculates scores.
+  - It validates guesses and updates the game state accordingly.
+
+## 3. Database (Sqlite)
+- **Collections**:
+  - **Scores**: This collection stores player scores, names, and game history.
+  
+- **Interactions**:
+  - The backend queries the database to get scores for the leaderboard and stores new scores after games finish.
+
+## 4. External API (Optional)
+- **Dictionary API**: This is used to fetch hints based on the word players are trying to guess.
+  
+- **Interactions**:
+  - When a player asks for a hint, the backend calls the Dictionary API to get a definition.
+
+## Data Flow Overview
+- **Frontend to Backend**:
+  - Start New Game -> `POST /game/new`
+  - Submit Guess -> `POST /game/guess`
+  - Fetch Leaderboard -> `GET /leaderboard`
+  - Show Hint -> (optional) `GET /hints` from the external API.
+
+- **Backend to Database**:
+  - Store Score -> `POST /leaderboard/score`
+  - Get Scores -> `GET /leaderboard`
+
+- **External API to Backend**:
+  - Fetch Hint -> (optional) `GET` request to the Dictionary API.
+
+## Summary
+In short, the React app is the user interface that talks to the Node.js backend via API calls. The backend processes these requests and interacts with the Sqlite database to manage game data and leaderboard info. If hints are requested, the backend can also pull data from an external dictionary API. This setup keeps everything organized and ensures smooth gameplay!
+
+
 

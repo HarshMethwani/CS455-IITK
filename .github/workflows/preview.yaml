@@ -25,7 +25,7 @@ jobs:
         run: cd hangman-server && npm install
 
       - name: Run ESLint for server
-        run: cd hangman-server && npx eslint . --format stylish > code-quality-report-server.txt
+        run: cd hangman-server && npm run lint
 
       - name: Run server tests with coverage
         run: cd hangman-server && npm run test -- --coverage

@@ -17,6 +17,7 @@ const App = () => {
   const [hint, setHint] = useState('');
   const [leaderboard, setLeaderboard] = useState([]);
   const [nameEntered, setNameEntered] = useState(false);
+  const [canPlay, setCanPlay] = useState(false); // New state variable to control game actions
 
   useEffect(() => {
     if (nameEntered) {
@@ -33,7 +34,7 @@ const App = () => {
   }, []);
 
   const handleGuess = (letter) => {
-    if (gameState.isWinner || gameState.isLoser) return;
+    if (gameState.isWinner || gameState.isLoser || !canPlay) return; // Prevent guessing if cannot play
     axios.post('http://localhost:3001/game/guess', { letter })
       .then(response => setGameState(response.data))
       .catch(error => console.error('Error making guess:', error));
@@ -44,6 +45,7 @@ const App = () => {
     if (name) {
       setPlayerName(name);
       setNameEntered(true);
+      setCanPlay(true); // Allow playing after starting a new game
       axios.post('http://localhost:3001/game/new')
         .then(response => setGameState(response.data))
         .catch(error => console.error('Error starting new game:', error));
@@ -51,6 +53,7 @@ const App = () => {
   };
 
   const fetchHint = async () => {
+    if (!canPlay) return; // Prevent hint fetching if cannot play
     try {
       const { data } = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${gameState.word}`);
       setHint(data[0]?.meanings[0]?.definitions[0]?.definition || 'No hint available');
@@ -75,6 +78,7 @@ const App = () => {
       saveScore();
       setTimeout(() => {
         alert(`Game Over! Your score is ${gameState.isWinner ? 100 - gameState.wrongGuesses * 10 : 0}`);
+        setCanPlay(false); // Reset play permission after the game ends
       }, 100);
     }
   }, [gameState.isWinner, gameState.isLoser]);
@@ -85,32 +89,17 @@ const App = () => {
       .catch(error => console.error('Error clearing leaderboard:', error));
   };
 
-  // if (!nameEntered) {
-  //   return (
-  //     <div className="App">
-  //       <h1>Enter your name to start the game</h1>
-  //       <input
-  //         type="text"
-  //         placeholder="Enter your name"
-  //         value={playerName}
-  //         onChange={(e) => setPlayerName(e.target.value)}
-  //       />
-  //       <button onClick={startNewGame}>Start Game</button>
-  //     </div>
-  //   );
-  // }
-
   return (
     <div className="App">
       <Hangman wrongGuesses={gameState.wrongGuesses} onNewGame={startNewGame} />
       <WordDisplay word={gameState.word} guessedLetters={gameState.guessedLetters} />
-      <Keyboard onGuess={handleGuess} guessedLetters={gameState.guessedLetters} />
-      
+      <Keyboard onGuess={handleGuess} guessedLetters={gameState.guessedLetters} disabled={!canPlay} /> {/* Disable keyboard if cannot play */}
+
       {gameState.isWinner && <p className="congrats-message">🎉 Congrats! You guessed the word! 🎉</p>}
       {gameState.isLoser && <p className="lose-message">You lost! The word was {gameState.word}</p>}
 
       <div>
-      <button onClick={startNewGame}>New Game</button>
+        <button onClick={startNewGame}>New Game</button>
         <button onClick={fetchHint}>Show Hint</button>
         <button onClick={clearLeaderboard}>Clear Leaderboard</button>
       </div>

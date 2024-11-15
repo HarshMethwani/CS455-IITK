@@ -1,9 +1,14 @@
 const { Builder, By, until } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 const { performance } = require('perf_hooks');
 const fs = require('fs');
 
 async function createDriver() {
-  return await new Builder().forBrowser('chrome').build();
+  const options = new chrome.Options();
+  options.addArguments('headless');
+  options.addArguments('no-sandbox');
+  options.addArguments('disable-dev-shm-usage');
+  return await new Builder().forBrowser('chrome').setChromeOptions(options).build();
 }
 
 async function measurePageLoadTime() {

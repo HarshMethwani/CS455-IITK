@@ -38,6 +38,12 @@ jobs:
             echo "Test coverage ($COVERAGE%) is below the threshold ($COVERAGE_THRESHOLD%)"
             exit 1
           fi
+        
+      - name: Run performance tests
+        run: cd hangman-client && node performanceTest.js
+
+      - name: Display performance test results
+        run: cd hangman-client && cat performanceTestResults.txt
 
       - name: Build Project Artifacts for Client
         run: |

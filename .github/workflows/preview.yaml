@@ -41,11 +41,14 @@ jobs:
             exit 1
           fi
         
-      - name: Run performance tests
+      - name: Run Client Side performance tests
         run: cd hangman-client && node performanceTest.js
 
-      - name: Display performance test results
+      - name: Display Client Side performance test results
         run: cd hangman-client && cat performanceTestResults.txt
+
+      -name: Run Server Side performance tests
+       run: cd hangman-server && npx artillery run loadTest.yml
 
       - name: Build Project Artifacts for Client
         run: |

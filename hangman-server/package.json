@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "artillery": "^2.0.21",
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "jest": "^29.7.0",

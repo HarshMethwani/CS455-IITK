@@ -51,7 +51,7 @@ jobs:
         run: cd hangman-server && npm install
 
       - name: Run Server Side performance tests
-        run: cd hangman-server && artillery run loadTest.yml
+        run: cd hangman-server && npx artillery run loadTest.yml
 
       - name: Build Project Artifacts for Client
         run: |

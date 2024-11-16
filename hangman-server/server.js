@@ -3,6 +3,7 @@ const cors = require('cors');
 const gameRoutes = require('./routes/gameRoutes');
 const playerRoutes = require('./routes/playerRoutes');
 const { sequelize } = require('./models/Index');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3001;

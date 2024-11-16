@@ -5,7 +5,8 @@ const playerRoutes = require('./routes/playerRoutes');
 const { sequelize } = require('./models/Index');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
+
 
 app.use(cors());
 app.use(express.json());
@@ -13,6 +14,10 @@ app.use(express.json());
 // Routes
 app.use('/game', gameRoutes);
 app.use('/leaderboard', playerRoutes);
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 
 // Sync Sequelize and start server
 sequelize.sync().then(() => {
